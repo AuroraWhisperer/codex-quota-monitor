@@ -1,21 +1,14 @@
 import { access, readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { fingerprint } from './fingerprint.mjs';
+
+export { fingerprint } from './fingerprint.mjs';
+export { STANDARD_PRICES, COST_BASIS } from './usage-pricing.mjs';
 
 export const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const fingerprint = value => createHash('sha256').update(value).digest('hex');
-
-// Bundled reference rates in USD per million tokens (2026-09-15).
-// Per-request tier and context adjustments are applied by the ledger.
-export const STANDARD_PRICES = {
-  'gpt-6-astra': { input: 10, cacheRead: 1, cacheCreation: 12.5, output: 50 },
-  'gpt-5.6-sol': { input: 4, cacheRead: 0.4, cacheCreation: 5, output: 20 },
-  'gpt-5.6-luna': { input: 0.2, cacheRead: 0.02, cacheCreation: 0.25, output: 1.2 },
-};
-export const COST_BASIS = `standard-base-2026-09-15:${fingerprint(JSON.stringify(STANDARD_PRICES))}`;
 
 export async function findCodexExecutable() {
   if (process.platform !== 'win32' || !['x64', 'arm64'].includes(process.arch)) {

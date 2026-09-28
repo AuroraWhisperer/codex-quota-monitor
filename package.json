@@ -2,6 +2,7 @@
   "name": "codex-quota-monitor",
   "version": "0.1.0",
   "description": "A local terminal dashboard for Codex quota and usage.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
